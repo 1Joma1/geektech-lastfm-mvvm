@@ -1,12 +1,10 @@
 package com.geektech.lastfmmvvm.ui.counter;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +16,8 @@ import com.geektech.lastfmmvvm.R;
 public class CounterFragment extends Fragment {
 
     private CounterViewModel mViewModel;
-    private TextView mCounterTV;
-    private Button mIncrement;
-    private Button mDecrement;
+    private TextView tvCounter;
+    private Button btnIncrement, btnDecrement;
 
     public static CounterFragment newInstance() {
         return new CounterFragment();
@@ -37,13 +34,12 @@ public class CounterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mCounterTV = view.findViewById(R.id.counter);
-        mIncrement = view.findViewById(R.id.counter_increment);
-        mDecrement = view.findViewById(R.id.counter_decrement);
+        btnIncrement = view.findViewById(R.id.counter_increment);
+        btnDecrement = view.findViewById(R.id.counter_decrement);
+        tvCounter = view.findViewById(R.id.counter);
 
-        mIncrement.setOnClickListener(v -> mViewModel.increment());
-
-        mDecrement.setOnClickListener(v -> mViewModel.decrement());
+        btnIncrement.setOnClickListener(v -> mViewModel.increment());
+        btnDecrement.setOnClickListener(v -> mViewModel.decrement());
     }
 
     @Override
@@ -52,12 +48,11 @@ public class CounterFragment extends Fragment {
 
         if (getActivity() == null) return;
 
-        mViewModel = ViewModelProviders.of(getActivity())
-                .get(CounterViewModel.class);
+        mViewModel = ViewModelProviders.of(getActivity()).get(CounterViewModel.class);
 
         mViewModel.counter.observe(this, integer -> {
             if (integer != null) {
-                mCounterTV.setText(integer.toString());
+                tvCounter.setText(integer.toString());
             }
         });
     }

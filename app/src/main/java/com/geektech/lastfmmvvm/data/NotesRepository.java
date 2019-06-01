@@ -1,26 +1,27 @@
 package com.geektech.lastfmmvvm.data;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+
+import com.geektech.lastfmmvvm.entity.Note;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NotesRepository {
 
-    private MutableLiveData<List<String>> notesLiveData = new MutableLiveData<>();
-    private ArrayList<String> notes = new ArrayList<>();
+    private MutableLiveData<List<Note>> notesLiveData = new MutableLiveData<>();
+    private ArrayList<Note> notes = new ArrayList<>();
 
-    public LiveData<List<String>> getNotes() {
+    public MutableLiveData<List<Note>> getNotes() {
         return notesLiveData;
     }
 
-    public void addNote(String note) {
+    public void addNote(Note note) {
         notes.add(note);
         notesLiveData.setValue(notes);
     }
 
-    public String getNote(int position) {
+    public Note getNote(int position) {
         return notes.get(position);
     }
 }

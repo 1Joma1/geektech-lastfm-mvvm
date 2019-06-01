@@ -2,44 +2,58 @@ package com.geektech.lastfmmvvm.ui.counter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.util.Pair;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.geektech.lastfmmvvm.R;
+
 import java.util.Date;
 import java.util.List;
 
-public class ActionsHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private ArrayList<Pair<String, Date>> mActions;
+public class ActionsHistoryAdapter extends RecyclerView.Adapter<ActionsHistoryAdapter.ViewHolder> {
 
-    public ActionsHistoryAdapter(ArrayList<Pair<String, Date>> actions) {
-        this.mActions = actions;
+    private CounterViewModel mViewModel;
+    private List<Pair<String, Date>> counterHistoryList;
+
+    ActionsHistoryAdapter(List<Pair<String, Date>> counterHistoryList) {
+        this.counterHistoryList = counterHistoryList;
     }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        //TODO: Return ViewHolder
-        return null;
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recycler_value_counter, viewGroup, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-        //TODO: Refresh ViewHolder data
-
-        if (mActions.size() > i && i >= 0) {
-            mActions.get(i);
-        }
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+        viewHolder.bind(counterHistoryList.get(i));
     }
 
     @Override
     public int getItemCount() {
-        return mActions.size();
+        return counterHistoryList.size();
     }
 
-    public void setActions(List<Pair<String, Date>> actions) {
-        mActions.clear();
-        mActions.addAll(actions);
-        notifyDataSetChanged();
+    class ViewHolder extends RecyclerView.ViewHolder {
+
+        TextView tvTitle, tvDate;
+
+        ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvTitle = itemView.findViewById(R.id.tv_history_counter);
+            tvDate = itemView.findViewById(R.id.tv_history_date);
+
+        }
+
+        void bind(Pair<String, Date> counterHistory) {
+            tvTitle.setText(counterHistory.first);
+            tvDate.setText(DateFormat.format("dd/MMM/yyyy\n hh:mm", counterHistory.second).toString());
+        }
     }
 }
